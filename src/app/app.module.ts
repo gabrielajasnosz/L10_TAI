@@ -19,7 +19,13 @@ import {BlogHomeComponent} from './components/blog-home/blog-home.component';
 import {FilterPipe} from './pipes/filter.pipe';
 import {TextFormatDirective} from './directives/text-format.directive';
 import {BlogDetailsComponent} from "./components/blog-details/blog-details.component";
-import { SelectizeComponent } from './components/selectize/selectize.component';
+import {SelectizeComponent} from './components/selectize/selectize.component';
+import {AuthService} from "./services/auth.service";
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {AuthInterceptor} from './services/auth.interceptor';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+
 
 @NgModule({
   declarations: [
@@ -37,16 +43,26 @@ import { SelectizeComponent } from './components/selectize/selectize.component';
     BlogHomeComponent,
     FilterPipe,
     TextFormatDirective,
-    SelectizeComponent
+    SelectizeComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+
   ],
   providers: [
-    DataService
+    DataService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+
   ],
   bootstrap: [AppComponent]
 })
